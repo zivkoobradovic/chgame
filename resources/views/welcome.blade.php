@@ -14,7 +14,13 @@
 </head>
 
 <body class="antialiased">
-    <x-chatgpt :$messages/>
+    <x-chatgpt :messages="$messages"/>
+    <div>
+        @if (!empty(session('image_url')))
+            <img src="{{session('image_url')}}" alt="">
+        @endif
+
+    </div>
 </body>
 
 </html>
