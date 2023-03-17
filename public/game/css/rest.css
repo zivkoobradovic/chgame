@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body, html {
+  width: 100%;
+  height: 100vh;
+
+  overflow: hidden;
+}
+body {
+  background-size: cover;
+}
+
+.content-holder {
+    padding: 60px;
+    margin-top: 50px;
+    border-radius: 10px;
+    background-image: url(../img/981.jpg);
+    background-position: center center;
+    background-size: 120%;
+    -webkit-box-shadow: 10px 10px 61px 0px rgba(0,0,0,0.37);
+-moz-box-shadow: 10px 10px 61px 0px rgba(0,0,0,0.37);
+box-shadow: 10px 10px 61px 0px rgba(0,0,0,0.37);
+}
+.chat-box {
+    width: 100%;
+    height: 500px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+.chat-box::-webkit-scrollbar {
+    width: 3px;
+}
+.chat-box::-webkit-scrollbar-thumb {
+    background-color: #83b66c;
+}
+.chat-box::-webkit-scrollbar-thumb:window-inactive {
+    background-color: #eee;
+}
+.chat-box-message {
+    /* width: 80%; */
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 20px;
+    margin: 9px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.chat-box-message.user {
+    float: right;
+    text-align: right;
+    clear: left;
+    background-color: #6cd370;
+    color: #fff;
+}
+.chat-box-message.assistant {
+    float: left;
+    clear: right;
+}
+.chat-suggest {
+    list-style: none;
+    padding: 0px;
+    width: 100%;
+    margin-top: 10px;
+}
+.chat-suggest li {
+    background-color: #6cd270;
+    display: inline-block;
+    margin: 2px;
+    padding: 2px;
+    color: #fff;
+    border-radius: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+}
+.chat-control input {
+      border-radius: 30px;
+      height: 50px;
+      border: none;
+  }
+
+.chat-control .btn {
+    width: 100%;
+    height: 50px;
+    border-radius: 30px;
+}
+.image-box img {
+  width: 100%;
+      border-radius: 10px;
+}
+.loader {
+    display: block;
+    position: fixed;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: #bfbfbff0;
+    z-index: 9999;
+    display: none;
+    -webkit-backdrop-filter: saturate(180%) blur(26px);
+    backdrop-filter: saturate(180%) blur(26px);
+    background-color: hsl(0deg 0% 15% / 74%);
+    background-color: rgb(255 255 255 / 47%);
+    background-image: url(https://thumbs.gfycat.com/CheerfulGreatAmurstarfish-max-1mb.gif);
+    background-size: 100px;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
