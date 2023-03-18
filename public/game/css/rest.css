@@ -31,7 +31,8 @@ box-shadow: 10px 10px 61px 0px rgba(0,0,0,0.37);
     border-radius: 10px;
 }
 .chat-box::-webkit-scrollbar {
-    width: 3px;
+    width: 5px;
+    border-radius: 3px;
 }
 .chat-box::-webkit-scrollbar-thumb {
     background-color: #83b66c;
@@ -91,6 +92,23 @@ box-shadow: 10px 10px 61px 0px rgba(0,0,0,0.37);
   width: 100%;
       border-radius: 10px;
 }
+.status-box {
+    display: inline-block;
+    background-color: #fefefe63;
+    border-radius: 10px;
+    margin-top: 18px;
+}
+.status-inventory {
+    padding: 0px;
+    padding-left: 15px;
+}
+.reset-game {
+  padding-top: 20px
+}
+.reset-game .btn {
+  border-radius: 20px;
+}
+
 .loader {
     display: block;
     position: fixed;
@@ -101,7 +119,6 @@ box-shadow: 10px 10px 61px 0px rgba(0,0,0,0.37);
     bottom: 0px;
     background-color: #bfbfbff0;
     z-index: 9999;
-    display: none;
     -webkit-backdrop-filter: saturate(180%) blur(26px);
     backdrop-filter: saturate(180%) blur(26px);
     background-color: hsl(0deg 0% 15% / 74%);
@@ -110,4 +127,5 @@ box-shadow: 10px 10px 61px 0px rgba(0,0,0,0.37);
     background-size: 100px;
     background-repeat: no-repeat;
     background-position: center center;
+    display: none;
 }

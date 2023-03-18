@@ -58,7 +58,6 @@
 
 
           </div>
-          <a href="/reset">RESET</a>
         </div>
         <div class="col-md-8">
           <div class="chat-box">
@@ -85,6 +84,13 @@
 
       </div>
 
+    </div>
+    <div class="reset-game">
+      <div class="text-center">
+        <a href="/reset" class="btn btn-danger">RESET GAME</a>
+
+
+      </div>
     </div>
 
   </div>
@@ -120,97 +126,73 @@
         $('.btn-send').click();
     }
   });
-  $('.chat-suggest li').click(function(){
+
+  $(document).on('click', '.chat-suggest li', function() {
     $('.message').val($(this).text());
     $('.btn-send').click();
   });
   $('.btn-send').click(function(){
     $('.loader').fadeIn(function() {
-      let url = "/chat";
-      let message = $('.message').val();
-      $(".chat-box").append("<div class='chat-box-message user'>" + message + "</div>");
-      $('.message').val('');
-      $.ajax({
-          headers: {
-              'X-CSRF-TOKEN': '{{ csrf_token() }}'
-          },
-          url: url,
-          datatype: 'JSON',
-          type: 'POST',
-          global: false,
-          async: false,
-          data: {
-              "message": message
-          },
-          success: function (data, status) {
-            var content = JSON.parse(data.messages.content);
-            console.log(content.description);
-            if(content.description) {
-              $(".chat-box").append("<div class='chat-box-message assistant'>" + content.description + "</div>");
-            } else {
-              $(".chat-box").append("<div class='chat-box-message assistant'>" + data.messages.content + "</div>");
-            }
-
-            $(".status-location").text(content.location);
-            $(".status-weather").text(content.weather);
-            $(".status-health").text(content.health);
-            $(".status-gold").text(content.gold);
-            $(".chat-suggest").empty();
-            $.each(content.possible_commands, function(k, v) {
-              $(".chat-suggest").append("<li>" + v + "</li>").on('click', 'ul li', function () {
-                $('.message').val($(this).text());
-                $('.btn-send').click();
-              });
-            });
-
-            $(".status-inventory").empty();
-            $.each(content.inventory, function(k, v) {
-              $(".status-inventory").append("<li>" + v + "</li>");
-            });
-            generateImage(content.image_description);
-
-
-            // var content = JSON.parse(data.messages);
-            // if(content) {
-            //   $(".chat-box").append("<div class='chat-box-message assistant'>" + content.description + "</div>");
-            //
-            // } else {
-            //
-            //
-            // }
-
-            // $(".chat-box").empty();
-            // $.each(data.messages, function(k, v) {
-            //
-            //
-            //   if(v.role === 'assistant') {
-            //     var content = JSON.parse(v.content)
-            //     // console.log(content);
-            //     if(content) {
-            //       $(".chat-box").append("<div class='chat-box-message assistant'>" + content.description + "</div>");
-            //
-            //     } else {
-            //       $(".chat-box").append("<div class='chat-box-message assistant'>" + v.content + "</div>");
-            //
-            //     }
-            //
-            //   } else {
-            //     $(".chat-box").append("<div class='chat-box-message user'>" + v.content + "</div>");
-            //
-            //   }
-            //
-            // });
-            $('.loader').fadeOut();
-            $(".chat-box").scrollTop($(".chat-box")[0].scrollHeight);
-
-          }
-      });
-
-
-    })
-
+      initGame();
+    });
   });
 
+  function initGame() {
+    let url = "/chat";
+    let message = "Start game";
+    if($('.message').val()) {
+      message = $('.message').val();
+      $(".chat-box").append("<div class='chat-box-message user'>" + message + "</div>");
+    }
+
+    $('.message').val('');
+
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        url: url,
+        datatype: 'JSON',
+        type: 'POST',
+        global: false,
+        async: false,
+        data: {
+            "message": message
+        },
+        success: function (data, status) {
+          if(data.messages == null) {
+    
+          }
+          var string = JSON.stringify(data.messages);
+
+          var content = JSON.parse(string);
+          console.log(content.description);
+          if(content.description) {
+            $(".chat-box").append("<div class='chat-box-message assistant'>" + content.description + "</div>");
+          } else {
+            $(".chat-box").append("<div class='chat-box-message assistant'>" + data.messages + "</div>");
+          }
+
+          $(".status-location").text(content.location);
+          $(".status-weather").text(content.weather);
+          $(".status-health").text(content.health);
+          $(".status-gold").text(content.gold);
+          $(".chat-suggest").empty();
+          $.each(content.possible_commands, function(k, v) {
+            $(".chat-suggest").append("<li>" + v + "</li>");
+          });
+
+          $(".status-inventory").empty();
+          $.each(content.inventory, function(k, v) {
+            $(".status-inventory").append("<li>" + v + "</li>");
+          });
+          generateImage(content.image_description);
+          $('.loader').fadeOut();
+          $(".chat-box").scrollTop($(".chat-box")[0].scrollHeight);
+
+        }
+    });
+  }
 
   </script>
 </body>
