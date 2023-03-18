@@ -140,6 +140,7 @@
   function initGame() {
     let url = "/chat";
     let message = "Start game";
+    let image_description = "";
     if($('.message').val()) {
       message = $('.message').val();
       $(".chat-box").append("<div class='chat-box-message user'>" + message + "</div>");
@@ -161,38 +162,46 @@
         },
         success: function (data, status) {
           if(data.messages == null) {
-    
-          }
-          var string = JSON.stringify(data.messages);
 
-          var content = JSON.parse(string);
-          console.log(content.description);
-          if(content.description) {
-            $(".chat-box").append("<div class='chat-box-message assistant'>" + content.description + "</div>");
-          } else {
-            $(".chat-box").append("<div class='chat-box-message assistant'>" + data.messages + "</div>");
           }
+          // var string = JSON.stringify(data.messages);
 
-          $(".status-location").text(content.location);
-          $(".status-weather").text(content.weather);
-          $(".status-health").text(content.health);
-          $(".status-gold").text(content.gold);
+          const jsonString = data.messages;
+          const jsonStartIndex = jsonString.indexOf('{');
+          const jsonEndIndex = jsonString.lastIndexOf('}');
+          const jsonSubstring = jsonString.substring(jsonStartIndex, jsonEndIndex + 1);
+          const jsonContentLast = jsonString.substring(jsonEndIndex + 1)
+          const jsonContent = JSON.parse(jsonSubstring);
+
+          // var content = JSON.parse(string);
+
+          $(".chat-box").append("<div class='chat-box-message assistant'>" + jsonContent.description + "<br>" + jsonContentLast + "</div>");
+
+
+
+          $(".status-location").text(jsonContent.location);
+          $(".status-weather").text(jsonContent.weather);
+          $(".status-health").text(jsonContent.health);
+          $(".status-gold").text(jsonContent.gold);
           $(".chat-suggest").empty();
-          $.each(content.possible_commands, function(k, v) {
+          $.each(jsonContent.possible_commands, function(k, v) {
             $(".chat-suggest").append("<li>" + v + "</li>");
           });
 
           $(".status-inventory").empty();
-          $.each(content.inventory, function(k, v) {
+          $.each(jsonContent.inventory, function(k, v) {
             $(".status-inventory").append("<li>" + v + "</li>");
           });
-          generateImage(content.image_description);
+          image_description = jsonContent.image_description;
           $('.loader').fadeOut();
           $(".chat-box").scrollTop($(".chat-box")[0].scrollHeight);
 
+              generateImage(image_description);
         }
     });
+
   }
+
 
   </script>
 </body>

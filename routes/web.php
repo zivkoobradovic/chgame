@@ -25,6 +25,8 @@ Route::get('/', function (Request $request) {
 });
 
 Route::get('ui/game', function () {
+  session()->forget('messages');
+  session()->forget('image_url');
     return view('game');
 });
 Route::post('/get-image', function (Request $request) {
@@ -127,7 +129,7 @@ Route::post('chat', function (Request $request) {
     $messages = collect(session('messages', []))->reject(fn ($message) => $message['role'] === 'system');
 
 
-    $contentJson = json_decode($response->choices[0]->message->content);
+    $contentJson = $response->choices[0]->message->content;
     return response()->json([
         'messages' => $contentJson
     ]);
