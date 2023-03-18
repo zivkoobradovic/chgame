@@ -31,6 +31,7 @@
           <div class="image-box">
 
           </div>
+          <input type="hidden" class="image-description" name="" value="">
           <div class="status-box">
             <div class="col-md-6">
               <h4>Location</h4>
@@ -97,9 +98,9 @@
   <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
   <script src="{{asset('game/js/bootstrap.min.js')}}"></script>
   <script>
-  function generateImage(description) {
+  function generateImage() {
 
-    let imageDescription = description;
+    let imageDescription = $('.image-description').val();
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -108,14 +109,16 @@
         datatype: 'JSON',
         type: 'POST',
         global: false,
-        async: false,
+        async: true,
         data: {
             "description": imageDescription
         },
         success: function (data, status) {
-          $('.image-box').empty();
-          $('.image-box').append("<img src='"+data.image+"'>");
-          console.log();
+          $('.image-box').slideUp(function() {
+            $('.image-box').empty();
+            $('.image-box').append("<img src='"+data.image+"'>");
+
+          }).slideDown();
         }
 
       });
@@ -156,15 +159,12 @@
         datatype: 'JSON',
         type: 'POST',
         global: false,
-        async: false,
+        async: true,
         data: {
             "message": message
         },
         success: function (data, status) {
-          if(data.messages == null) {
-
-          }
-          // var string = JSON.stringify(data.messages);
+          $('.loader').fadeOut();
 
           const jsonString = data.messages;
           const jsonStartIndex = jsonString.indexOf('{');
@@ -172,6 +172,7 @@
           const jsonSubstring = jsonString.substring(jsonStartIndex, jsonEndIndex + 1);
           const jsonContentLast = jsonString.substring(jsonEndIndex + 1)
           const jsonContent = JSON.parse(jsonSubstring);
+          $('.image-description').val(jsonContent.description);
 
           // var content = JSON.parse(string);
 
@@ -192,13 +193,13 @@
           $.each(jsonContent.inventory, function(k, v) {
             $(".status-inventory").append("<li>" + v + "</li>");
           });
-          image_description = jsonContent.image_description;
-          $('.loader').fadeOut();
-          $(".chat-box").scrollTop($(".chat-box")[0].scrollHeight);
 
-              generateImage(image_description);
+
+          $(".chat-box").scrollTop($(".chat-box")[0].scrollHeight);
+generateImage();
+
         }
-    });
+      });
 
   }
 
